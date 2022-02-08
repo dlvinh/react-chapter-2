@@ -4,9 +4,6 @@ import PhoneItem from './PhoneItem';
 export default class PhoneList extends Component {
     phoneData = this.props.phoneList;
 
-    state = {
-        phone:{}
-    }
     RenderPhoneList = () => {
         console.log()
         return this.phoneData.map((item, index) => {

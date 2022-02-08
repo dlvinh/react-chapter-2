@@ -47,7 +47,6 @@ export default class PhonePage extends Component {
     state = {
         cartList: [],
         phoneInfo: {},
-        showCart: false,
     }
 
     onReadmoreHandler = (item) => {
