@@ -46,6 +46,7 @@ export default class PhonePage extends Component {
     ];
     state = {
         cartList: [],
+        cartTotal: 0,
         phoneInfo: {},
     }
 
@@ -64,56 +65,72 @@ export default class PhonePage extends Component {
             return <PhoneInfo phoneInfoProps={this.state.phoneInfo}></PhoneInfo>
         }
     }
-    onAddToCartHandler = (addedItem)=>{
-        console.log(addedItem)
+    onAddToCartHandler = (addedItem) => {
+        // console.log(addedItem)
         let newCartItem = {
             maSP: addedItem.maSP,
             hinhAnh: addedItem.hinhAnh,
             tenSP: addedItem.tenSP,
             donGia: addedItem.giaBan,
             soLuong: 1,
+            subTotal: addedItem.giaBan,
         }
-        let index= this.state.cartList.findIndex(item => item.maSP === addedItem.maSP)
-        console.log("index",index);
-        if (index === -1){
-            this.state.cartList.push(newCartItem);
-            console.log(this.state.cartList)
-        }else{
+        let newTotal=0;
+        let index = this.state.cartList.findIndex(item => item.maSP === newCartItem.maSP)
+        
+        if (index === -1) {
+            newTotal = +this.state.cartTotal + newCartItem.subTotal;
+            this.state.cartList.push(newCartItem);      
+            // console.log(this.state.cartList)
+        } else {
             this.state.cartList[index].soLuong = this.state.cartList[index].soLuong + 1;
-            console.log("!== -1",this.state.cartList)
+            this.state.cartList[index].subTotal = this.state.cartList[index].donGia  * this.state.cartList[index].soLuong;
+            newTotal = this.state.cartTotal + this.state.cartList[index].donGia
             
+            // console.log("!== -1", this.state.cartList)
         }
-        console.log(this.state.cartList);
-        this.setState ({
+        
+        console.log(this.state);
+        this.setState({
             ...this.state.phoneInfo,
-            cartList: this.state.cartList
+            cartList: this.state.cartList,
+            cartTotal: newTotal
         })
     }
 
-    onSubstractQuantityHandler=(editedItem)=>{
-        let index = this.state.cartList.findIndex(item => item.maSP === editedItem.maSP );
-        console.log("ajkhsdjkha")
-        if(editedItem.soLuong > 1){
-        
-            this.state.cartList[index].soLuong =  +this.state.cartList[index].soLuong - +1;
-        }else{
-            this.state.cartList.splice(index,1);
+    onSubstractQuantityHandler = (editedItem) => {
+        let index = this.state.cartList.findIndex(item => item.maSP === editedItem.maSP);
+        this.state.cartList[index].subTotal =this.state.cartList[index].subTotal  - this.state.cartList[index].donGia;
+        this.state.cartTotal = this.state.cartTotal - this.state.cartList[index].donGia
+        if (editedItem.soLuong > 1) {
+            this.state.cartList[index].soLuong = +this.state.cartList[index].soLuong - +1;
+        } else {
+            this.state.cartList.splice(index, 1);
         }
         console.log(this.state.cartList)
         this.setState({
-            ...this.state.phoneInfo,
-            cartList:this.state.cartList
+            ...this.state,
+            cartList: this.state.cartList,
+            cartTotal:this.state.cartTotal
         })
     }
-    onAdditionQuantityHandler = (item)=>{
-
+    onDeleteItemOnCart = (deletedItem)=>{
+        let index = this.state.cartList.findIndex(item => item.maSP === deletedItem.maSP);
+        this.state.cartTotal = this.state.cartTotal - this.state.cartList[index].subTotal;
+        this.state.cartList.splice(index, 1);
+        this.setState({
+            ...this.state.phoneInfo,
+            cartList: this.state.cartList,       
+            cartTotal: this.state.cartTotal
+        })
     }
+
     render() {
         return <div>
             <NavCart cartStateProps={this.state.cartList} ToggleCartHandler={this.onToggleCartHandler}></NavCart>
             <PhoneList phoneList={this.phoneData} ReadmoreHandler={this.onReadmoreHandler} AddToCardHandler={this.onAddToCartHandler} ></PhoneList>
             {this.renderPhoneInfo()}
-            <CartModal cartListProps={this.state.cartList} SubstractQuantityHandler={this.onSubstractQuantityHandler} AdditionQuantityHandler={this.onAdditionQuantityHandler}/>
+            <CartModal cartListProps={this.state} SubstractQuantityHandler={this.onSubstractQuantityHandler} AdditionQuantityHandler={this.onAddToCartHandler} DeleteItemOnCart={this.onDeleteItemOnCart}/>
         </div>;
     }
 }

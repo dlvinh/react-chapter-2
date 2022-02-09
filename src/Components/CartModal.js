@@ -1,46 +1,27 @@
 import React, { Component } from 'react';
 
 export default class CartModal extends Component {
-    cartList = this.props.cartListProps;
+    cartList = this.props.cartListProps.cartList;
+
 
     renderCartTable = () => {
-        console.log(this.cartList);
-        // return this.cartList.filter((item, index) => {
-        //     let newItem = this.cartList.indexOf(index).maSP === item.maSP;
-        //     return <tr>
-        //         <td scope="row"><img src={newItem.hinhAnh} alt="..." /></td>
-        //         <td>{newItem.tenSP}</td>
-        //         <td>{newItem.giaBan}</td>
-        //         <td>1</td>
-        //     </tr>
-        // })
-        let newCartList = this.cartList.filter((item, index) => {
-            return this.cartList.indexOf(item) === index;
-        }, () => {
+        console.log(this.props.cartListProps)
 
-        })
-        //  return newCartList.map((item, index) => {
-        //         return <tr>
-        //             <td className='align-middle' scope="row"><img src={item.hinhAnh} alt="..." style={{width:"50px"}} /></td>
-        //             <td className='align-middle'>{item.tenSP}</td>
-        //             <td className='align-middle'>1</td>
-        //             <td className='align-middle'>{item.giaBan.toLocaleString()}</td>
-        //         </tr>
-        //     })
+        console.log(this.cartList);
         return this.cartList.map((item, index) => {
             return <tr >
-                <td className='align-middle' scope="row"><img src={item.hinhAnh} alt="..." style={{width:"50px"}} /></td>
+                <td className='align-middle' scope="row"><img src={item.hinhAnh} alt="..." style={{ width: "50px" }} /></td>
                 <td className='align-middle'>{item.tenSP}</td>
-                <td className='align-middle'><button className='minusBtn' onClick={this.props.SubstractQuantityHandler.bind(this,item)}>-</button> {item.soLuong} <button className='additionBtn'>+</button></td>
-                <td className='align-middle'>{item.donGia.toLocaleString()}</td>
-                <td className='align-middle'><button className='deleteBtn'>X</button></td>
+                <td className='align-middle'><button className='minusBtn btn btn-dark' onClick={this.props.SubstractQuantityHandler.bind(this, item)}>-</button> {item.soLuong} <button className='additionBtn btn btn-dark' onClick={this.props.AdditionQuantityHandler.bind(this, item)}>+</button></td>
+                <td className='align-middle'>{item.subTotal.toLocaleString()}</td>
+                <td className='align-middle'><button className='deleteBtn btn btn-danger' onClick={this.props.DeleteItemOnCart.bind(this, item)}>X</button></td>
             </tr>
         })
     }
     render() {
         return <div>
             <div className="modal fade" id="modelId" tabIndex={-1} role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                <div className="modal-dialog" role="document">
+                <div className="modal-dialog" role="document" style={{ maxWidth: "800px" }}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Your Cart</h5>
@@ -55,22 +36,19 @@ export default class CartModal extends Component {
                                         <th>Product</th>
                                         <th>Name</th>
                                         <th>Quantity</th>
-                                        <th>Price</th> 
+                                        <th>Price</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {/* <tr>
-                                        <td scope="row"></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row"></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr> */}
+                                <tbody style={{fontSize:"18px", fontWeight:"bold"}}>
                                     {this.renderCartTable()}
+                                    <tr>
+                                        <th colspan="4" className='text-right'>
+                                            Total: {this.props.cartListProps.cartTotal.toLocaleString()}
+                                        </th>
+                                    </tr>
+
                                 </tbody>
+
                             </table>
                         </div>
                         <div className="modal-footer">
