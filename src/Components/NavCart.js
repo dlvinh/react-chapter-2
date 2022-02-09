@@ -2,6 +2,10 @@ import React from 'react';
 
 export default function NavCart(props) {
     let cartList  = props.cartStateProps;
+    let totalCartItem  = 0;
+    cartList.map((item,index)=>{
+        totalCartItem = item.soLuong + totalCartItem;
+    })
     
     return <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,7 +24,7 @@ export default function NavCart(props) {
                 </ul>
                 <div className="form-inline my-2 my-lg-0" data-toggle="modal" data-target="#modelId" style={{cursor:"pointer"}}>
                     <i className="fa fa-shopping-cart"></i>
-                    <p>{cartList.length}</p>
+                    <p>{totalCartItem}</p>
                 </div>
             </div>
         </nav>

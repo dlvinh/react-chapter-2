@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 
 export default class CartModal extends Component {
     cartList = this.props.cartListProps;
-    newCartList = [];
-    state = {
-        cartItem:[]
-    }
+
     renderCartTable = () => {
         console.log(this.cartList);
         // return this.cartList.filter((item, index) => {
@@ -30,22 +27,15 @@ export default class CartModal extends Component {
         //             <td className='align-middle'>{item.giaBan.toLocaleString()}</td>
         //         </tr>
         //     })
-        // return this.cartList.map((item, index) => {
-        //     return <tr >
-        //         <td className='align-middle' scope="row"><img src={item.hinhAnh} alt="..." style={{width:"50px"}} /></td>
-        //         <td className='align-middle'>{item.tenSP}</td>
-        //         <td className='align-middle'>1</td>
-        //         <td className='align-middle'>{item.giaBan.toLocaleString()}</td>
-        //     </tr>
-        // })
-        this.cartList.map((item,index)=>{
-            if(this.cartList.indexOf(item) === index){
-
-            }else{
-                
-            }
+        return this.cartList.map((item, index) => {
+            return <tr >
+                <td className='align-middle' scope="row"><img src={item.hinhAnh} alt="..." style={{width:"50px"}} /></td>
+                <td className='align-middle'>{item.tenSP}</td>
+                <td className='align-middle'><button className='minusBtn' onClick={this.props.SubstractQuantityHandler.bind(this,item)}>-</button> {item.soLuong} <button className='additionBtn'>+</button></td>
+                <td className='align-middle'>{item.donGia.toLocaleString()}</td>
+                <td className='align-middle'><button className='deleteBtn'>X</button></td>
+            </tr>
         })
-
     }
     render() {
         return <div>
@@ -64,9 +54,8 @@ export default class CartModal extends Component {
                                     <tr>
                                         <th>Product</th>
                                         <th>Name</th>
-                                        <th>Unit</th>
-                                        <th>Price</th>
-
+                                        <th>Quantity</th>
+                                        <th>Price</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
