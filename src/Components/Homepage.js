@@ -29,10 +29,22 @@ class Homepage extends Component {
 const mapDispatchToProps = (dispatch)=>{
     return {
         onClickPlay: ()=>{
-            let action ={
-                type: "TEST",
+            let randomAnimation = {
+                type:"RANDOM"
             }
-            dispatch(action)
+            let count=0;
+            let random = setInterval(()=>{
+                dispatch(randomAnimation)
+                count ++;
+                if (count >10){
+                    clearInterval(random);
+                    let action ={
+                        type: "PLAY_GAME",
+                    }
+                    dispatch(action)
+                }
+            },100);
+
         }
     }
 }

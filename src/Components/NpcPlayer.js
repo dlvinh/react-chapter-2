@@ -1,17 +1,39 @@
 import React, { Component } from 'react'
-
-export default class NpcPlayer extends Component {
+import { connect } from 'react-redux';
+class NpcPlayer extends Component {
   render() {
+    let keyframe = `@keyframes randomItem${Date.now()} {
+      0% {top: -50px;}
+      25% {top: 100px;}
+      50% {top: -50px;}
+      75% {top: 100px;}
+      100% {top: 0;}
+    }`
+
     return (
-        <div className="text-center playerGame">
-                <div className="theThink">
-                    <img style={{transform:'rotate(120deg)'}} className="mt-3" width={100} height={100} src="./img/gameOanTuXi/bua.png" alt="./img/gameOanTuXi/bua.png" />
-                </div>
-                <div className="speech-bubble"></div>
-                <img style={{ width: 200, height: 200 }} src="./img/gameOanTuXi/playerComputer.png" alt="./img/gameOanTuXi/playerComputer.png" />
-
-
-            </div>
+      <div className="text-center playerGame">
+        <style>
+          {keyframe}
+        </style>
+        <div className="theThink">
+          <img style={{
+            position: 'absolute',
+            left: '30%',
+            animation: `randomItem${Date.now()} 0.5s`,
+            transform: 'rotate(120deg)'
+          }} className="mt-3" width={100} height={100} src={this.props.npcProps.imgSrc} alt="./img/gameOanTuXi/bua.png" />
+        </div>
+        <div className="speech-bubble"></div>
+        <img style={{ width: 200, height: 200 }} src="./img/gameOanTuXi/playerComputer.png" alt="./img/gameOanTuXi/playerComputer.png" />
+      </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    npcProps: state.appStateReducer.npc
+  }
+}
+
+export default connect(mapStateToProps)(NpcPlayer);

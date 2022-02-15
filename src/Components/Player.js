@@ -6,7 +6,7 @@ class Player extends Component {
     return (
         <div className="text-center playerGame">
         <div className="theThink">
-            <img style={{transform:'rotate(120deg)'}} className="mt-3" width={100} height={100} src={this.props.playerProps.selection} alt={this.props.playerProps.selection} />
+            <img style={{transform:'rotate(120deg)'}} className="mt-3" width={100} height={100} src={this.props.playerProps.option.imgSrc} alt={this.props.playerProps.option.imgSrc} />
             {/* {this.renderSelection()} */}
         </div>
         <div className="speech-bubble"></div>
@@ -38,7 +38,7 @@ const mapStateToProps = (state)=>{
     return {
         playerProps: state.appStateReducer.player
     }
-}
+};
 
 const mapDispatchToProps = (dispatch)=>{
     return {
@@ -50,6 +50,6 @@ const mapDispatchToProps = (dispatch)=>{
            dispatch(action);
         }
     }
-}
+};
 
 export default connect (mapStateToProps, mapDispatchToProps)(Player)
